@@ -65,52 +65,137 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-white">
       {/* Header */}
-      <header className="border-b border-black/10 bg-white">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center gap-3">
-            <FileText className="w-8 h-8" />
-            <h1 className="text-3xl font-bold">Res-Gen</h1>
+      <header
+        className="sticky top-0 z-50 border-b border-black/10 shadow-sm"
+        style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(12px)' }}
+      >
+        <div className="container mx-auto px-4 py-5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3" style={{ animation: 'fadeIn 0.5s ease-out' }}>
+              <div className="p-2 rounded-xl bg-black text-white">
+                <FileText className="w-6 h-6" />
+              </div>
+              <div>
+                <h1
+                  className="text-2xl font-bold"
+                  style={{
+                    background: 'linear-gradient(135deg, #000000 0%, #434343 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}
+                >
+                  Res-Gen
+                </h1>
+                <p className="text-xs text-gray-500">AI Resume Generator</p>
+              </div>
+            </div>
+
+            {/* Progress Indicator */}
+            <div className="flex items-center gap-2">
+              <div
+                className="rounded-full transition-all duration-300"
+                style={{
+                  width: step === 'template' ? '32px' : '8px',
+                  height: '8px',
+                  backgroundColor: step === 'template' ? '#000' : '#d4d4d4'
+                }}
+              />
+              <div
+                className="rounded-full transition-all duration-300"
+                style={{
+                  width: step === 'input' ? '32px' : '8px',
+                  height: '8px',
+                  backgroundColor: step === 'input' ? '#000' : '#d4d4d4'
+                }}
+              />
+              <div
+                className="rounded-full transition-all duration-300"
+                style={{
+                  width: step === 'preview' ? '32px' : '8px',
+                  height: '8px',
+                  backgroundColor: step === 'preview' ? '#000' : '#d4d4d4'
+                }}
+              />
+            </div>
           </div>
-          <p className="text-sm text-muted-foreground mt-2">
-            Professional Resume Generator powered by AI
-          </p>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
-        {step === 'template' && (
-          <TemplateSelector onSelect={handleTemplateSelect} />
-        )}
+      <main className="container mx-auto px-4 py-12">
+        <div
+          style={{
+            animation: step === 'template' ? 'fadeIn 0.5s ease-out' :
+              step === 'input' ? 'scaleIn 0.4s ease-out' :
+                'fadeIn 0.5s ease-out'
+          }}
+        >
+          {step === 'template' && (
+            <TemplateSelector onSelect={handleTemplateSelect} />
+          )}
 
-        {step === 'input' && (
-          <InputForm onSubmit={handleInputSubmit} loading={loading} />
-        )}
+          {step === 'input' && (
+            <InputForm onSubmit={handleInputSubmit} loading={loading} />
+          )}
 
-        {step === 'preview' && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
-              <PDFPreview pdfUrl={pdfUrl} onDownload={handleDownload} />
+          {step === 'preview' && (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div
+                className="lg:col-span-2"
+                style={{ animation: 'slideInLeft 0.6s ease-out' }}
+              >
+                <PDFPreview pdfUrl={pdfUrl} onDownload={handleDownload} />
+              </div>
+              <div style={{ animation: 'slideInRight 0.6s ease-out' }}>
+                <SelectiveEditor
+                  latexContent={latexContent}
+                  onEdit={handleEdit}
+                  loading={loading}
+                />
+              </div>
             </div>
-            <div>
-              <SelectiveEditor
-                latexContent={latexContent}
-                onEdit={handleEdit}
-                loading={loading}
-              />
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-black/10 mt-16 py-6">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          Built with LangChain, Gemini API, FastAPI, React & shadcn/ui
+      <footer className="border-t border-black/10 mt-20 py-8 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-gray-500">
+              Built with LangChain, Gemini API, FastAPI, React & shadcn/ui
+            </p>
+            <div className="flex items-center gap-4 text-sm text-gray-500">
+              <span>© 2025 Res-Gen</span>
+              <span>•</span>
+              <span>MIT License</span>
+            </div>
+          </div>
         </div>
       </footer>
+
+      {/* Keyframes */}
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes scaleIn {
+          from { opacity: 0; transform: scale(0.95); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes slideInLeft {
+          from { opacity: 0; transform: translateX(-20px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInRight {
+          from { opacity: 0; transform: translateX(20px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+      `}</style>
     </div>
   );
 }

@@ -14,6 +14,7 @@ export function TemplateSelector({ onSelect }: TemplateSelectorProps) {
     const [templates, setTemplates] = useState<Template[]>([]);
     const [selectedId, setSelectedId] = useState<string>('');
     const [loading, setLoading] = useState(true);
+    const [hoveredId, setHoveredId] = useState<string>('');
 
     useEffect(() => {
         const loadTemplates = async () => {
@@ -65,24 +66,37 @@ export function TemplateSelector({ onSelect }: TemplateSelectorProps) {
             <div className="flex justify-center items-center py-20">
                 <div className="flex flex-col items-center gap-3">
                     <Sparkles className="w-8 h-8 animate-pulse" />
-                    <p className="text-muted-foreground">Loading templates...</p>
+                    <p className="text-gray-500">Loading templates...</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="space-y-8">
-            <div className="text-center space-y-3">
-                <div className="flex items-center justify-center gap-2">
-                    <h2 className="text-4xl font-bold">Select Resume Template</h2>
-                    <Badge variant="default" className="gap-1">
+        <div className="space-y-10">
+            <div
+                className="text-center space-y-4"
+                style={{ animation: 'fadeIn 0.5s ease-out' }}
+            >
+                <div className="flex items-center justify-center gap-3">
+                    <h2
+                        className="text-5xl font-bold"
+                        style={{
+                            background: 'linear-gradient(135deg, #000000 0%, #434343 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text'
+                        }}
+                    >
+                        Select Your Template
+                    </h2>
+                    <Badge variant="default" className="gap-1 text-xs px-3 py-1">
                         <Sparkles className="w-3 h-3" />
                         {templates.length} Available
                     </Badge>
                 </div>
-                <p className="text-muted-foreground text-lg">
-                    Choose a professional template optimized for ATS systems
+                <p className="text-gray-500 text-lg max-w-2xl mx-auto">
+                    Choose from our collection of professional, ATS-optimized resume templates
                 </p>
             </div>
 
@@ -90,20 +104,31 @@ export function TemplateSelector({ onSelect }: TemplateSelectorProps) {
                 {templates.map((template) => {
                     const templateInfo = getTemplateDescription(template.id);
                     const isSelected = selectedId === template.id;
+                    const isHovered = hoveredId === template.id;
 
                     return (
                         <Card
                             key={template.id}
                             className={cn(
-                                'cursor-pointer transition-all hover:shadow-xl border-2 relative overflow-hidden',
+                                'cursor-pointer border-2 relative overflow-hidden',
                                 isSelected
-                                    ? 'ring-4 ring-primary ring-offset-2 border-primary shadow-xl'
-                                    : 'hover:border-primary/50'
+                                    ? 'ring-4 ring-black ring-offset-4 border-black shadow-2xl'
+                                    : 'hover:border-gray-400 hover:shadow-xl'
                             )}
+                            style={{
+                                transform: isSelected ? 'scale(1.05)' : isHovered ? 'translateY(-4px)' : 'translateY(0)',
+                                transition: 'all 0.3s ease',
+                                boxShadow: isHovered ? '0 10px 25px rgba(0, 0, 0, 0.1)' : undefined
+                            }}
                             onClick={() => handleSelect(template.id)}
+                            onMouseEnter={() => setHoveredId(template.id)}
+                            onMouseLeave={() => setHoveredId('')}
                         >
                             {isSelected && (
-                                <div className="absolute top-3 right-3 z-10">
+                                <div
+                                    className="absolute top-3 right-3 z-10"
+                                    style={{ animation: 'scaleIn 0.3s ease-out' }}
+                                >
                                     <Badge className="gap-1 shadow-lg">
                                         <Check className="w-3 h-3" />
                                         Selected
@@ -113,7 +138,7 @@ export function TemplateSelector({ onSelect }: TemplateSelectorProps) {
 
                             <CardHeader className="pb-4">
                                 <div className="flex items-start gap-3">
-                                    <div className="p-2 rounded-lg bg-primary/10">
+                                    <div className="p-2 rounded-lg bg-black/10">
                                         <FileText className="w-6 h-6" />
                                     </div>
                                     <div className="flex-1">
@@ -153,6 +178,17 @@ export function TemplateSelector({ onSelect }: TemplateSelectorProps) {
                     );
                 })}
             </div>
+
+            <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes scaleIn {
+          from { opacity: 0; transform: scale(0.8); }
+          to { opacity: 1; transform: scale(1); }
+        }
+      `}</style>
         </div>
     );
 }

@@ -20,8 +20,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount backend routes
-app.include_router(backend_router)
+# Mount backend routes with /api prefix
+app.include_router(backend_router, prefix="/api")
 
 @app.get("/")
 def read_root():
@@ -31,4 +31,5 @@ if __name__ == "__main__":
     print("🚀 Starting Res-Gen Backend Server...")
     print("📍 API URL: http://localhost:8000")
     print("📖 API Docs: http://localhost:8000/docs")
+    print("📋 Templates: http://localhost:8000/api/templates")
     uvicorn.run("run:app", host="0.0.0.0", port=8000, reload=True)
