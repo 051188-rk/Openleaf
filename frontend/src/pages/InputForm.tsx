@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { generateResume, previewResume } from '../api';
+import { generateResume } from '../api';
 
 export function InputForm() {
     const navigate = useNavigate();
@@ -25,19 +25,10 @@ export function InputForm() {
                 template_id: templateId,
             });
 
-            const pdfUrl = await previewResume(result.latex_content);
-
-            // Auto-download
-            const link = document.createElement('a');
-            link.href = pdfUrl.startsWith('http') ? pdfUrl : `${window.location.origin}${pdfUrl}`;
-            link.download = 'resume.pdf';
-            link.click();
-
-            // Navigate to result with state
-            navigate('/result', {
+            // Navigate to editor with LaTeX content
+            navigate('/editor', {
                 state: {
-                    latexContent: result.latex_content,
-                    pdfUrl
+                    latexContent: result.latex_content
                 }
             });
         } catch (error) {

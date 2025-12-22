@@ -6,3 +6,5 @@ langchain-google-genai
 pydantic
 requests
 python-dotenv
+pdf2image
+pillow

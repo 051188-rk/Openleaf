@@ -3,6 +3,7 @@ import { Header } from './components/layout/Header';
 import { TemplateSelector } from './pages/TemplateSelector';
 import { InputForm } from './pages/InputForm';
 import { ResultView } from './pages/ResultView';
+import { EditorPage } from './pages/EditorPage';
 import './index.css';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<TemplateSelector />} />
           <Route path="/input" element={<InputForm />} />
           <Route path="/result" element={<ResultView />} />
+          <Route path="/editor" element={<EditorPage />} />
         </Routes>
       </div>
     </BrowserRouter>

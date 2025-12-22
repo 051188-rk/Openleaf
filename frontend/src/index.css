@@ -345,3 +345,206 @@ html {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+/* ========== Editor Styles (Cursor-like) ========== */
+.editor-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #1e1e1e;
+  color: #d4d4d4;
+}
+
+.editor-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background: #252526;
+  border-bottom: 1px solid #3e3e42;
+  z-index: 10;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.toolbar-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #cccccc;
+  margin: 0;
+}
+
+.compiling-indicator {
+  font-size: 0.875rem;
+  color: #4ec9b0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.compiling-indicator::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: #4ec9b0;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  background: transparent;
+  border: 1px solid #3e3e42;
+  border-radius: 6px;
+  color: #cccccc;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.toolbar-btn:hover {
+  background: #2d2d30;
+  border-color: #565656;
+  color: #ffffff;
+}
+
+.toolbar-btn:active {
+  transform: scale(0.98);
+}
+
+.toolbar-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #0e639c;
+  border: 1px solid #0e639c;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.toolbar-btn-primary:hover {
+  background: #1177bb;
+  border-color: #1177bb;
+}
+
+.toolbar-btn-primary:active {
+  transform: scale(0.98);
+}
+
+.zoom-level {
+  font-size: 0.875rem;
+  color: #858585;
+  min-width: 45px;
+  text-align: center;
+}
+
+/* Allotment split pane overrides for dark theme */
+.editor-container .split-view-view {
+  background: #1e1e1e;
+}
+
+/* Editor pane */
+.editor-pane {
+  height: 100%;
+  background: #1e1e1e;
+}
+
+/* Preview pane */
+.preview-pane {
+  height: 100%;
+  background: #1e1e1e;
+  overflow: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.preview-content {
+  transform-origin: top center;
+  transition: transform 0.2s ease;
+}
+
+.preview-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
+  background: white;
+}
+
+.preview-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #6a6a6a;
+  font-size: 0.95rem;
+}
+
+.preview-placeholder p {
+  margin: 0;
+}
+
+/* Monaco editor container dark theme integration */
+.editor-pane .monaco-editor {
+  background: #1e1e1e;
+}
+
+.editor-pane .monaco-editor .margin {
+  background: #1e1e1e;
+}
+
+/* Custom scrollbar for preview pane */
+.preview-pane::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.preview-pane::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.preview-pane::-webkit-scrollbar-thumb {
+  background: #424242;
+  border-radius: 5px;
+}
+
+.preview-pane::-webkit-scrollbar-thumb:hover {
+  background: #4e4e4e;
+}

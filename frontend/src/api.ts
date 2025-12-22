@@ -42,6 +42,13 @@ export const previewResume = async (latexContent: string): Promise<string> => {
     return response.data.pdf_url;
 };
 
+export const compilePreview = async (latexContent: string): Promise<string> => {
+    const response = await api.post<{ image: string }>('/compile-preview', {
+        latex_content: latexContent,
+    });
+    return response.data.image;
+};
+
 export const editResume = async (currentContent: string,
     instruction: string
 ): Promise<GeneratedResume> => {

@@ -2,7 +2,11 @@ import os
 import subprocess
 import uuid
 import re
+import base64
+import io
 from pathlib import Path
+from PIL import Image, ImageDraw, ImageFont
+from pdf2image import convert_from_path
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
@@ -153,3 +157,83 @@ def compile_latex_to_pdf(latex_content: str) -> str:
     # Fallback to simple PDF generation
     print("Using simple PDF generation (pdflatex not available)")
     return create_simple_pdf(latex_content)
+
+def create_error_image(error_message: str) -> str:
+    """Create an image displaying an error message"""
+    # Create a white image with error text
+    img = Image.new('RGB', (800, 1000), color='white')
+    draw = ImageDraw.Draw(img)
+    
+    # Try to use a font, fallback to default if not available
+    try:
+        font_title = ImageFont.truetype("arial.ttf", 24)
+        font_body = ImageFont.truetype("arial.ttf", 14)
+    except:
+        font_title = ImageFont.load_default()
+        font_body = ImageFont.load_default()
+    
+    # Draw error title
+    draw.text((50, 50), "LaTeX Compilation Error", fill='red', font=font_title)
+    
+    # Draw error message (word wrap)
+    y_offset = 100
+    max_width = 700
+    words = error_message.split()
+    lines = []
+    current_line = []
+    
+    for word in words:
+        test_line = ' '.join(current_line + [word])
+        bbox = draw.textbbox((0, 0), test_line, font=font_body)
+        if bbox[2] - bbox[0] <= max_width:
+            current_line.append(word)
+        else:
+            if current_line:
+                lines.append(' '.join(current_line))
+                current_line = [word]
+            else:
+                lines.append(word)
+    if current_line:
+        lines.append(' '.join(current_line))
+    
+    for line in lines[:30]:  # Max 30 lines
+        draw.text((50, y_offset), line, fill='black', font=font_body)
+        y_offset += 25
+    
+    # Convert to base64
+    buffered = io.BytesIO()
+    img.save(buffered, format="PNG")
+    img_str = base64.b64encode(buffered.getvalue()).decode()
+    return f"data:image/png;base64,{img_str}"
+
+def compile_latex_to_image(latex_content: str) -> str:
+    """
+    Compiles LaTeX content to a base64-encoded PNG image for preview.
+    Returns base64 data URL string.
+    """
+    try:
+        # First compile to PDF
+        pdf_path = compile_latex_to_pdf(latex_content)
+        
+        if not pdf_path or not os.path.exists(pdf_path):
+            return create_error_image("PDF generation failed")
+        
+        # Convert PDF first page to image
+        try:
+            images = convert_from_path(pdf_path, first_page=1, last_page=1, dpi=150)
+            if not images:
+                return create_error_image("PDF conversion to image failed")
+            
+            # Convert to base64
+            buffered = io.BytesIO()
+            images[0].save(buffered, format="PNG")
+            img_str = base64.b64encode(buffered.getvalue()).decode()
+            
+            return f"data:image/png;base64,{img_str}"
+            
+        except Exception as e:
+            return create_error_image(f"Image conversion error: {str(e)}")
+            
+    except Exception as e:
+        return create_error_image(f"Compilation error: {str(e)}")
+

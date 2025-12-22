@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, BackgroundTasks
 from fastapi.responses import FileResponse, JSONResponse
 from apps.backend.models.schemas import ResumeInput, ResumeSectionInput, GeneratedResume
 from apps.backend.services.gemini_service import generate_resume_content, edit_resume_section
-from apps.backend.services.latex_service import compile_latex_to_pdf
+from apps.backend.services.latex_service import compile_latex_to_pdf, compile_latex_to_image
 import os
 
 app = APIRouter()
@@ -92,6 +92,18 @@ async def edit_resume(data: ResumeSectionInput):
         
         new_latex = edit_resume_section(data.current_content, data.instruction)
         return GeneratedResume(latex_content=new_latex)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/compile-preview")
+async def compile_preview(data: GeneratedResume):
+    """
+    Compiles LaTeX to a base64-encoded PNG image for real-time preview.
+    Returns: {"image": "data:image/png;base64,..."}
+    """
+    try:
+        image_data = compile_latex_to_image(data.latex_content)
+        return {"image": image_data}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
