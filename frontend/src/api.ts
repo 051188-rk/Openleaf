@@ -58,3 +58,19 @@ export const editResume = async (currentContent: string,
     });
     return response.data;
 };
+
+export const compilePDFBase64 = async (latexContent: string): Promise<{ success: boolean; pdf: string | null; error: string | null }> => {
+    const response = await api.post<{ success: boolean; pdf: string | null; error: string | null }>('/compile-pdf-base64', {
+        latex_content: latexContent,
+    });
+    return response.data;
+};
+
+export const chatEdit = async (message: string, latexContent: string): Promise<{ latex_content: string; success: boolean; error: string | null }> => {
+    const response = await api.post<{ latex_content: string; success: boolean; error: string | null }>('/chat-edit', {
+        message,
+        latex_content: latexContent,
+    });
+    return response.data;
+};
+

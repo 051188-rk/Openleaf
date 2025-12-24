@@ -1,9 +1,17 @@
 from fastapi import APIRouter, HTTPException, BackgroundTasks
 from fastapi.responses import FileResponse, JSONResponse
-from apps.backend.models.schemas import ResumeInput, ResumeSectionInput, GeneratedResume
+from apps.backend.models.schemas import (
+    ResumeInput, 
+    ResumeSectionInput, 
+    GeneratedResume,
+    ChatMessage,
+    CompilePDFRequest,
+    FileTreeNode
+)
 from apps.backend.services.gemini_service import generate_resume_content, edit_resume_section
 from apps.backend.services.latex_service import compile_latex_to_pdf, compile_latex_to_image
 import os
+
 
 app = APIRouter()
 
@@ -110,3 +118,50 @@ async def compile_preview(data: GeneratedResume):
 @app.get("/templates")
 async def get_templates():
     return [{"id": name, "name": name.title()} for name in TEMPLATES.keys()]
+
+@app.post("/compile-pdf-base64")
+async def compile_pdf_base64(data: CompilePDFRequest):
+    """
+    Compile LaTeX to PDF and return as base64 data URL for iframe embedding.
+    Returns: {"success": bool, "pdf": "data:application/pdf;base64,...", "error": str}
+    """
+    from apps.backend.services.pdf_service import pdf_service
+    
+    try:
+        success, base64_pdf, error = pdf_service.compile_and_encode(data.latex_content)
+        
+        if success:
+            return {"success": True, "pdf": base64_pdf, "error": None}
+        else:
+            return {"success": False, "pdf": None, "error": error or "Unknown compilation error"}
+    except Exception as e:
+        return {"success": False, "pdf": None, "error": str(e)}
+
+@app.post("/chat-edit")
+async def chat_edit(data: ChatMessage):
+    """
+    Use AI to edit LaTeX based on user instruction.
+    Returns: {"latex_content": str, "success": bool, "error": str}
+    """
+    try:
+        from apps.backend.services.gemini_service import edit_resume_section
+        
+        new_latex = edit_resume_section(data.latex_content, data.message)
+        return {"latex_content": new_latex, "success": True, "error": None}
+    except Exception as e:
+        return {"latex_content": data.latex_content, "success": False, "error": str(e)}
+
+@app.get("/file-tree")
+async def get_file_tree():
+    """
+    Return a mock file tree structure for the editor.
+    """
+    return {
+        "name": "root",
+        "type": "folder",
+        "children": [
+            {"name": "resume.tex", "type": "file"},
+            {"name": "resume.cls", "type": "file"},
+        ]
+    }
+

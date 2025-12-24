@@ -15,3 +15,16 @@ class ResumeSectionInput(BaseModel):
 class GeneratedResume(BaseModel):
     latex_content: str
     markdown_content: Optional[str] = None
+
+class ChatMessage(BaseModel):
+    message: str
+    latex_content: str
+
+class CompilePDFRequest(BaseModel):
+    latex_content: str
+
+class FileTreeNode(BaseModel):
+    name: str
+    type: str  # 'file' or 'folder'
+    children: Optional[List['FileTreeNode']] = None
+

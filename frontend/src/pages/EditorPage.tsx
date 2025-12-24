@@ -1,18 +1,26 @@
 import { useState, useEffect, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import Editor from '@monaco-editor/react';
+import { useLocation } from 'react-router-dom';
 import { Allotment } from 'allotment';
 import 'allotment/dist/style.css';
-import { FiDownload, FiRefreshCw, FiZoomIn, FiZoomOut } from 'react-icons/fi';
-import { compilePreview, previewResume } from '../api';
+import { EditorHeader } from '../components/editor/EditorHeader';
+import { FileTree } from '../components/editor/FileTree';
+import { CodePanel } from '../components/editor/CodePanel';
+import { PDFPreview } from '../components/editor/PDFPreview';
+import { ChatPanel } from '../components/editor/ChatPanel';
+import { compilePDFBase64, chatEdit } from '../api';
 
 export function EditorPage() {
     const location = useLocation();
-    const navigate = useNavigate();
+
+    // State management
+    const [activeView, setActiveView] = useState<'code' | 'visual'>('code');
+    const [activeFile, setActiveFile] = useState('resume.tex');
     const [latexContent, setLatexContent] = useState<string>('');
-    const [previewImage, setPreviewImage] = useState<string>('');
+    const [pdfData, setPdfData] = useState<string | null>(null);
     const [isCompiling, setIsCompiling] = useState(false);
-    const [zoom, setZoom] = useState(100);
+    const [compilationError, setCompilationError] = useState<string | null>(null);
+    const [isChatProcessing, setIsChatProcessing] = useState(false);
+
     const debounceTimerRef = useRef<number | null>(null);
 
     useEffect(() => {
@@ -21,10 +29,42 @@ export function EditorPage() {
         if (state?.latexContent) {
             setLatexContent(state.latexContent);
         } else {
-            // No content, redirect back
-            navigate('/');
+            // Default template if no content provided
+            setLatexContent(`\\documentclass{resume}
+\\usepackage[left=0.4 in,top=0.4 in,right=0.4 in,bottom=0.4 in]{geometry}
+\\name{Rakesh Kumar Barik}
+\\address{+91 9937122417}
+\\address{LinkedIn \\\\ GitHub \\\\ LeetCode \\\\ CodeChef}
+
+\\begin{document}
+
+\\begin{rSection}{Education}
+
+{\\bf B.Tech in Computer Science \\& Engineering}, Raj Niwash University of Technology (RJUT), Roorkela
+\\hfill {Nov 2022 - June 2026}
+
+CGPA: 8.27
+
+\\end{rSection}
+
+% SKILLS SECTION
+\\begin{rSection}{SKILLS}
+
+\\begin{tabular}{ @{} >{\\bfseries}l @{\\hspace{6ex}} l }
+Programming Languages & C, C++, Java, Python, JavaScript, TypeScript
+\\\\
+Software Engineering \\& Automation & SDLC, Agile, DevOps, TDD, CI/CD, etc.
+\\\\
+DevOps \\& Cloud & GitHub Actions, Kubernetes, AWS (EC2), Git, Linux
+\\\\
+Database & SQL, MongoDB, MySQL, PostgreSQL, SQLite
+\\end{tabular}
+
+\\end{rSection}
+
+\\end{document}`);
         }
-    }, [location, navigate]);
+    }, [location]);
 
     useEffect(() => {
         // Compile on initial load and whenever content changes
@@ -35,9 +75,9 @@ export function EditorPage() {
             }
 
             // Set new timer for debounced compilation
-            debounceTimerRef.current = setTimeout(() => {
+            debounceTimerRef.current = window.setTimeout(() => {
                 compileLatex();
-            }, 500);
+            }, 1000);
         }
 
         return () => {
@@ -51,91 +91,113 @@ export function EditorPage() {
         if (!latexContent) return;
 
         setIsCompiling(true);
+        setCompilationError(null);
+
         try {
-            const imageData = await compilePreview(latexContent);
-            setPreviewImage(imageData);
+            const result = await compilePDFBase64(latexContent);
+
+            if (result.success && result.pdf) {
+                setPdfData(result.pdf);
+            } else {
+                setCompilationError(result.error || 'Unknown compilation error');
+            }
         } catch (error) {
             console.error('Compilation error:', error);
+            setCompilationError('Failed to compile LaTeX. Please check your code.');
         } finally {
             setIsCompiling(false);
         }
     };
 
-    const handleDownload = async () => {
-        try {
-            const pdfUrl = await previewResume(latexContent);
+    const handleDownload = () => {
+        if (pdfData) {
+            // Convert base64 to blob and download
+            const base64Data = pdfData.split(',')[1];
+            const binaryData = atob(base64Data);
+            const arrayBuffer = new ArrayBuffer(binaryData.length);
+            const uint8Array = new Uint8Array(arrayBuffer);
+
+            for (let i = 0; i < binaryData.length; i++) {
+                uint8Array[i] = binaryData.charCodeAt(i);
+            }
+
+            const blob = new Blob([uint8Array], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
-            link.href = pdfUrl.startsWith('http') ? pdfUrl : `${window.location.origin}${pdfUrl}`;
+            link.href = url;
             link.download = 'resume.pdf';
             link.click();
-        } catch (error) {
-            console.error('Download error:', error);
-            alert('Failed to download PDF');
+            URL.revokeObjectURL(url);
         }
     };
 
-    const handleZoomIn = () => setZoom(prev => Math.min(prev + 10, 200));
-    const handleZoomOut = () => setZoom(prev => Math.max(prev - 10, 50));
+    const handleChatMessage = async (message: string) => {
+        setIsChatProcessing(true);
+
+        try {
+            const result = await chatEdit(message, latexContent);
+
+            if (result.success) {
+                setLatexContent(result.latex_content);
+            } else {
+                console.error('Chat edit error:', result.error);
+                alert('Failed to process your request: ' + result.error);
+            }
+        } catch (error) {
+            console.error('Chat error:', error);
+            alert('Failed to process your request. Please try again.');
+        } finally {
+            setIsChatProcessing(false);
+        }
+    };
 
     return (
-        <div className="editor-container">
-            <div className="editor-toolbar">
-                <div className="toolbar-left">
-                    <h2 className="toolbar-title">Resume Editor</h2>
-                    {isCompiling && <span className="compiling-indicator">Compiling...</span>}
-                </div>
-                <div className="toolbar-right">
-                    <button onClick={handleZoomOut} className="toolbar-btn" title="Zoom Out">
-                        <FiZoomOut />
-                    </button>
-                    <span className="zoom-level">{zoom}%</span>
-                    <button onClick={handleZoomIn} className="toolbar-btn" title="Zoom In">
-                        <FiZoomIn />
-                    </button>
-                    <button onClick={compileLatex} className="toolbar-btn" title="Recompile">
-                        <FiRefreshCw />
-                    </button>
-                    <button onClick={handleDownload} className="toolbar-btn-primary" title="Download PDF">
-                        <FiDownload /> Download PDF
-                    </button>
-                </div>
-            </div>
+        <div className="editor-page">
+            <EditorHeader
+                activeView={activeView}
+                onViewChange={setActiveView}
+                onRecompile={compileLatex}
+                onDownload={handleDownload}
+                isCompiling={isCompiling}
+            />
 
-            <Allotment defaultSizes={[50, 50]}>
-                <Allotment.Pane minSize={300}>
-                    <div className="editor-pane">
-                        <Editor
-                            height="100%"
-                            defaultLanguage="latex"
-                            theme="vs-dark"
-                            value={latexContent}
-                            onChange={(value) => setLatexContent(value || '')}
-                            options={{
-                                minimap: { enabled: false },
-                                fontSize: 14,
-                                lineNumbers: 'on',
-                                scrollBeyondLastLine: false,
-                                wordWrap: 'on',
-                                automaticLayout: true,
-                            }}
+            <div className="editor-layout">
+                <Allotment defaultSizes={[200, 400, 350, 250]}>
+                    {/* File Tree */}
+                    <Allotment.Pane minSize={150} maxSize={300}>
+                        <FileTree
+                            activeFile={activeFile}
+                            onFileSelect={setActiveFile}
                         />
-                    </div>
-                </Allotment.Pane>
+                    </Allotment.Pane>
 
-                <Allotment.Pane minSize={300}>
-                    <div className="preview-pane">
-                        {previewImage ? (
-                            <div className="preview-content" style={{ transform: `scale(${zoom / 100})` }}>
-                                <img src={previewImage} alt="Resume Preview" />
-                            </div>
-                        ) : (
-                            <div className="preview-placeholder">
-                                <p>Preview will appear here...</p>
-                            </div>
-                        )}
-                    </div>
-                </Allotment.Pane>
-            </Allotment>
+                    {/* Code Editor */}
+                    <Allotment.Pane minSize={300}>
+                        <CodePanel
+                            fileName={activeFile}
+                            content={latexContent}
+                            onChange={setLatexContent}
+                        />
+                    </Allotment.Pane>
+
+                    {/* PDF Preview */}
+                    <Allotment.Pane minSize={300}>
+                        <PDFPreview
+                            pdfData={pdfData}
+                            isCompiling={isCompiling}
+                            error={compilationError}
+                        />
+                    </Allotment.Pane>
+
+                    {/* AI Chat Panel */}
+                    <Allotment.Pane minSize={200} maxSize={400}>
+                        <ChatPanel
+                            onSendMessage={handleChatMessage}
+                            isProcessing={isChatProcessing}
+                        />
+                    </Allotment.Pane>
+                </Allotment>
+            </div>
         </div>
     );
 }
