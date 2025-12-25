@@ -12,6 +12,40 @@ class PDFService:
     def __init__(self):
         self.temp_dir = Path("temp_latex")
         self.temp_dir.mkdir(exist_ok=True)
+        self.pdflatex_path = self._find_pdflatex()
+    
+    def _find_pdflatex(self) -> Optional[str]:
+        """Find pdflatex executable in common installation paths"""
+        # Try common MiKTeX installation paths
+        possible_paths = [
+            # User-specific installation
+            Path(os.path.expanduser("~")) / "AppData" / "Local" / "Programs" / "MiKTeX" / "miktex" / "bin" / "x64" / "pdflatex.exe",
+            # System-wide installation
+            Path("C:/Program Files/MiKTeX/miktex/bin/x64/pdflatex.exe"),
+            Path("C:/miktex/miktex/bin/x64/pdflatex.exe"),
+            # Check if it's in PATH
+            "pdflatex"
+        ]
+        
+        for path in possible_paths:
+            if path == "pdflatex":
+                # Check if it's in PATH
+                try:
+                    result = subprocess.run(
+                        ['pdflatex', '--version'],
+                        capture_output=True,
+                        timeout=5
+                    )
+                    if result.returncode == 0:
+                        return "pdflatex"
+                except:
+                    continue
+            else:
+                if Path(path).exists():
+                    return str(path)
+        
+        return None
+
     
     def compile_latex_to_pdf(self, latex_content: str, output_name: str = "resume") -> Tuple[bool, Optional[str], Optional[str]]:
         """
@@ -31,10 +65,13 @@ class PDFService:
             
             # Try to compile with pdflatex
             try:
+                if not self.pdflatex_path:
+                    return False, None, "pdflatex not found. Please install MiKTeX or add it to your PATH."
+                
                 # Run pdflatex twice for proper formatting (references, etc.)
                 for _ in range(2):
                     result = subprocess.run(
-                        ['pdflatex', '-interaction=nonstopmode', '-halt-on-error', f'{output_name}.tex'],
+                        [self.pdflatex_path, '-interaction=nonstopmode', '-halt-on-error', f'{output_name}.tex'],
                         cwd=temp_compile_dir,
                         capture_output=True,
                         text=True,
