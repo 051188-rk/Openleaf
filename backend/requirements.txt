@@ -8,3 +8,9 @@ requests
 python-dotenv
 pdf2image
 pillow
+prisma
+asyncpg
+pyjwt
+passlib[bcrypt]
+python-jose[cryptography]
+

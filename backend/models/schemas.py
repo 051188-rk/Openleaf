@@ -28,3 +28,25 @@ class FileTreeNode(BaseModel):
     type: str  # 'file' or 'folder'
     children: Optional[List['FileTreeNode']] = None
 
+# Authentication schemas
+class UserSignup(BaseModel):
+    email: str
+    password: str
+    name: str
+
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+class UserResponse(BaseModel):
+    id: int
+    email: str
+    name: str
+    createdAt: str
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserResponse
+
+
