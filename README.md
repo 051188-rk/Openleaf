@@ -14,6 +14,5 @@
 ![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
 
 <img src="./version1.png" alt="Version 1 UI" width="900" />
-<h2>v1: pdf preview working, agentic changes working</h2>
 
 </div>
