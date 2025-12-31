@@ -74,3 +74,47 @@ export const chatEdit = async (message: string, latexContent: string): Promise<{
     return response.data;
 };
 
+// Authentication interfaces
+export interface SignupData {
+    email: string;
+    password: string;
+    name: string;
+}
+
+export interface LoginData {
+    email: string;
+    password: string;
+}
+
+export interface AuthResponse {
+    access_token: string;
+    token_type: string;
+    user: {
+        id: number;
+        email: string;
+        name: string;
+        createdAt: string;
+    };
+}
+
+// Authentication API functions
+export const signup = async (data: SignupData): Promise<AuthResponse> => {
+    const response = await api.post<AuthResponse>('/auth/signup', data);
+    return response.data;
+};
+
+export const login = async (data: LoginData): Promise<AuthResponse> => {
+    const response = await api.post<AuthResponse>('/auth/login', data);
+    return response.data;
+};
+
+// Set auth token for API requests
+export const setAuthToken = (token: string | null) => {
+    if (token) {
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    } else {
+        delete api.defaults.headers.common['Authorization'];
+    }
+};
+
+
