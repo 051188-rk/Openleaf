@@ -92,8 +92,9 @@ export function Signup() {
                                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                                 required
                                 minLength={6}
+                                maxLength={50}
                             />
-                            <small className="form-hint">Minimum 6 characters</small>
+                            <small className="form-hint">6-50 characters</small>
                         </div>
 
                         <button

@@ -18,7 +18,10 @@ ACCESS_TOKEN_EXPIRE_HOURS = int(os.getenv("JWT_EXPIRATION_HOURS", "24"))
 
 def hash_password(password: str) -> str:
     """Hash a password using bcrypt"""
-    return pwd_context.hash(password)
+    # Bcrypt has a 72-byte limit, truncate if necessary
+    password_bytes = password.encode('utf-8')[:72]
+    return pwd_context.hash(password_bytes.decode('utf-8', errors='ignore'))
+
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:

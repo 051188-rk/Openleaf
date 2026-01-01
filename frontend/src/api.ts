@@ -1,13 +1,12 @@
 import axios from 'axios';
 
-const API_BASE_URL = '/api';
-
 const api = axios.create({
-    baseURL: API_BASE_URL,
+    baseURL: 'http://localhost:8000/api',
     headers: {
         'Content-Type': 'application/json',
     },
 });
+
 
 export interface Template {
     id: string;
@@ -111,7 +110,7 @@ export const login = async (data: LoginData): Promise<AuthResponse> => {
 // Set auth token for API requests
 export const setAuthToken = (token: string | null) => {
     if (token) {
-        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        api.defaults.headers.common['Authorization'] = `Bearer ${token} `;
     } else {
         delete api.defaults.headers.common['Authorization'];
     }
