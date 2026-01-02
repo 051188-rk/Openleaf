@@ -26,20 +26,38 @@ async def test_database_connection():
         }
 
 
+@auth_router.post("/test-signup-simple")
+async def test_signup_simple(user_data: UserSignup):
+    """Simple signup test without error handling"""
+    from apps.backend.services.auth_service import hash_password
+    
+    # Just hash the password and return
+    try:
+        hashed = hash_password(user_data.password)
+        return {"message": "Password hashed successfully", "length": len(hashed)}
+    except Exception as e:
+        return {"error": str(e), "type": type(e).__name__}
+
+
 @auth_router.post("/signup", response_model=TokenResponse)
 async def signup(user_data: UserSignup):
     """Register a new user"""
     try:
+        print(f"Signup attempt for email: {user_data.email}")
+        
         # Check if user already exists
         existing_user = await prisma.user.find_unique(where={"email": user_data.email})
         
         if existing_user:
             raise HTTPException(status_code=400, detail="Email already registered")
         
+        print("Hashing password...")
         # Hash password
         hashed_password = hash_password(user_data.password)
+        print(f"Password hashed successfully")
         
         # Create user
+        print("Creating user in database...")
         user = await prisma.user.create(
             data={
                 "email": user_data.email,
@@ -47,6 +65,7 @@ async def signup(user_data: UserSignup):
                 "name": user_data.name
             }
         )
+        print(f"User created: {user.id}")
         
         # Create token
         access_token = create_access_token(data={"sub": user.email, "user_id": user.id})
@@ -67,7 +86,11 @@ async def signup(user_data: UserSignup):
     except HTTPException:
         raise
     except Exception as e:
+        print(f"SIGNUP ERROR: {type(e).__name__}: {str(e)}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Signup failed: {str(e)}")
+
 
 
 @auth_router.post("/login", response_model=TokenResponse)
