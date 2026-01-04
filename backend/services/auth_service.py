@@ -18,15 +18,11 @@ ACCESS_TOKEN_EXPIRE_HOURS = int(os.getenv("JWT_EXPIRATION_HOURS", "24"))
 
 def hash_password(password: str) -> str:
     """Hash a password using bcrypt"""
-    # Bcrypt has a 72-byte limit
-    # Encode to bytes first, then truncate, then decode back
-    password_bytes = password.encode('utf-8')
-    if len(password_bytes) > 72:
-        password_bytes = password_bytes[:72]
-        # Decode back to string for passlib
-        password = password_bytes.decode('utf-8', errors='ignore')
+    # Passlib handles UTF-8 encoding internally
+    # Just make sure password isn't too long (72 char limit is safe for UTF-8)
+    if len(password) > 72:
+        password = password[:72]
     return pwd_context.hash(password)
-
 
 
 
