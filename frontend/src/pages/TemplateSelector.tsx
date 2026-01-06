@@ -32,10 +32,15 @@ export function TemplateSelector() {
     return (
         <div className="container py-8 animate-fadeIn">
             <div className="text-center mb-8">
-                <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1rem' }}>
+                <h2 style={{
+                    fontSize: '2rem',
+                    fontWeight: 700,
+                    marginBottom: '0.75rem',
+                    color: 'var(--gray-800)'
+                }}>
                     Choose Your Template
                 </h2>
-                <p style={{ color: 'var(--gray-600)', fontSize: '1.125rem' }}>
+                <p style={{ color: 'var(--gray-600)', fontSize: '1rem' }}>
                     Select a professional resume style
                 </p>
             </div>
@@ -46,7 +51,7 @@ export function TemplateSelector() {
                 justifyContent: 'center',
                 gap: '1.5rem',
                 flexWrap: 'wrap',
-                marginBottom: '3rem'
+                marginBottom: '2.5rem'
             }}>
                 {templates.map((template) => (
                     <RadioTemplateCard
@@ -66,8 +71,8 @@ export function TemplateSelector() {
                     onClick={handleStart}
                     disabled={!selectedTemplate}
                     style={{
-                        fontSize: '1.125rem',
-                        padding: '1rem 3rem',
+                        fontSize: '0.875rem',
+                        padding: '0.75rem 2rem',
                         opacity: selectedTemplate ? 1 : 0.5,
                         cursor: selectedTemplate ? 'pointer' : 'not-allowed'
                     }}

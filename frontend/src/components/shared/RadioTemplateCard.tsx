@@ -30,29 +30,28 @@ export function RadioTemplateCard({ id, name, icon: Icon, isSelected, onSelect }
                 justifyContent: 'center',
                 width: '120px',
                 minHeight: '120px',
-                borderRadius: '16px',
-                border: `3px solid ${isSelected ? 'var(--black)' : 'var(--gray-300)'}`,
-                background: isSelected ? 'var(--black)' : 'var(--white)',
-                color: isSelected ? 'var(--white)' : 'var(--gray-700)',
-                boxShadow: isSelected ? '0 8px 20px rgba(0,0,0,0.15)' : '0 2px 8px rgba(0,0,0,0.08)',
-                transition: 'all 0.3s ease',
-                position: 'relative',
-                transform: isSelected ? 'translateY(-4px)' : 'translateY(0)'
+                borderRadius: '8px',
+                border: `2px solid ${isSelected ? 'var(--primary-green)' : 'var(--gray-300)'}`,
+                background: isSelected ? 'var(--primary-green-light)' : 'var(--white)',
+                color: isSelected ? 'var(--primary-green)' : 'var(--gray-700)',
+                boxShadow: isSelected ? '0 2px 8px rgba(19, 138, 7, 0.15)' : '0 1px 3px rgba(0,0,0,0.08)',
+                transition: 'all 0.2s ease',
+                position: 'relative'
             }}>
                 {isSelected && (
                     <div style={{
                         position: 'absolute',
                         top: '8px',
                         right: '8px',
-                        width: '12px',
-                        height: '12px',
+                        width: '10px',
+                        height: '10px',
                         borderRadius: '50%',
-                        background: 'var(--white)'
+                        background: 'var(--primary-green)'
                     }} />
                 )}
-                <Icon size={40} style={{ marginBottom: '0.75rem' }} />
+                <Icon size={36} style={{ marginBottom: '0.75rem' }} />
                 <span style={{
-                    fontSize: '0.9rem',
+                    fontSize: '0.875rem',
                     fontWeight: 600,
                     textAlign: 'center'
                 }}>

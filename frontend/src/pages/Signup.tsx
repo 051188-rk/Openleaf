@@ -48,7 +48,7 @@ export function Signup() {
                     <form onSubmit={handleSubmit} className="auth-form">
                         <div className="form-group">
                             <label htmlFor="name">
-                                <FiUser size={18} />
+                                <FiUser size={16} />
                                 Full Name
                             </label>
                             <input
@@ -64,7 +64,7 @@ export function Signup() {
 
                         <div className="form-group">
                             <label htmlFor="email">
-                                <FiMail size={18} />
+                                <FiMail size={16} />
                                 Email
                             </label>
                             <input
@@ -80,7 +80,7 @@ export function Signup() {
 
                         <div className="form-group">
                             <label htmlFor="password">
-                                <FiLock size={18} />
+                                <FiLock size={16} />
                                 Password
                             </label>
                             <input

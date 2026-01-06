@@ -14,45 +14,50 @@ export function Header() {
     return (
         <header style={{
             background: 'var(--white)',
-            borderBottom: '2px solid var(--gray-200)',
-            padding: '1.5rem 0'
+            borderBottom: '1px solid var(--gray-200)',
+            padding: '0.75rem 0'
         }}>
             <div className="container">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
                         <div className="flex items-center gap-3">
                             <div style={{
-                                width: '56px',
-                                height: '56px',
-                                background: 'var(--black)',
-                                borderRadius: '14px',
+                                width: '36px',
+                                height: '36px',
+                                background: 'var(--primary-green)',
+                                borderRadius: '4px',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                color: 'var(--white)',
-                                boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+                                color: 'var(--white)'
                             }}>
-                                <FiFileText size={28} />
+                                <FiFileText size={20} />
                             </div>
                             <div>
-                                <h1 style={{ fontSize: '2rem', fontWeight: 800, margin: 0 }}>res-gen</h1>
-                                <p style={{ fontSize: '0.875rem', color: 'var(--gray-500)', margin: 0 }}>
-                                    AI Resume Generator
-                                </p>
+                                <h1 style={{
+                                    fontSize: '1.25rem',
+                                    fontWeight: 600,
+                                    margin: 0,
+                                    color: 'var(--gray-800)'
+                                }}>res-gen</h1>
                             </div>
                         </div>
                     </Link>
 
                     {isAuthenticated && user && (
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-3">
                             <div className="flex items-center gap-2" style={{
-                                padding: '0.5rem 1rem',
-                                background: 'var(--gray-100)',
-                                borderRadius: '10px',
+                                padding: '0.375rem 0.75rem',
+                                background: 'var(--gray-50)',
+                                borderRadius: '4px',
                                 border: '1px solid var(--gray-200)'
                             }}>
-                                <FiUser size={18} color="var(--gray-600)" />
-                                <span style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--gray-700)' }}>
+                                <FiUser size={16} color="var(--gray-600)" />
+                                <span style={{
+                                    fontSize: '0.813rem',
+                                    fontWeight: 500,
+                                    color: 'var(--gray-700)'
+                                }}>
                                     {user.name}
                                 </span>
                             </div>
@@ -62,13 +67,13 @@ export function Header() {
                                 style={{
                                     display: 'flex',
                                     alignItems: 'center',
-                                    gap: '0.5rem',
-                                    padding: '0.625rem 1.25rem',
-                                    fontSize: '0.875rem'
+                                    gap: '0.375rem',
+                                    padding: '0.375rem 0.875rem',
+                                    fontSize: '0.813rem'
                                 }}
                             >
-                                <FiLogOut size={18} />
-                                Logout
+                                <FiLogOut size={16} />
+                                Log out
                             </button>
                         </div>
                     )}
@@ -77,3 +82,4 @@ export function Header() {
         </header>
     );
 }
+
