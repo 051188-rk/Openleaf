@@ -1,4 +1,4 @@
-from passlib.context import CryptContext
+import bcrypt
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from typing import Optional
@@ -6,14 +6,6 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-
-# Password hashing - configure bcrypt properly
-pwd_context = CryptContext(
-    schemes=["bcrypt"],
-    deprecated="auto",
-    bcrypt__rounds=12,  # Explicit rounds
-    bcrypt__ident="2b"   # Use bcrypt variant 2b
-)
 
 # JWT settings
 SECRET_KEY = os.getenv("JWT_SECRET_KEY", "your-secret-key-change-in-production")
@@ -23,17 +15,32 @@ ACCESS_TOKEN_EXPIRE_HOURS = int(os.getenv("JWT_EXPIRATION_HOURS", "24"))
 
 def hash_password(password: str) -> str:
     """Hash a password using bcrypt"""
-    # Passlib handles UTF-8 encoding internally
-    # Just make sure password isn't too long (72 char limit is safe for UTF-8)
-    if len(password) > 72:
-        password = password[:72]
-    return pwd_context.hash(password)
-
+    # Convert password to bytes
+    password_bytes = password.encode('utf-8')
+    
+    # bcrypt has a 72 byte limit, truncate if needed
+    if len(password_bytes) > 72:
+        password_bytes = password_bytes[:72]
+    
+    # Generate salt and hash
+    salt = bcrypt.gensalt(rounds=12)
+    hashed = bcrypt.hashpw(password_bytes, salt)
+    
+    # Return as string
+    return hashed.decode('utf-8')
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verify a password against its hash"""
-    return pwd_context.verify(plain_password, hashed_password)
+    try:
+        # Convert to bytes
+        password_bytes = plain_password.encode('utf-8')
+        hashed_bytes = hashed_password.encode('utf-8')
+        
+        # Verify
+        return bcrypt.checkpw(password_bytes, hashed_bytes)
+    except Exception:
+        return False
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
