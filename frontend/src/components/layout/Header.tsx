@@ -39,7 +39,7 @@ export function Header() {
                                     fontWeight: 600,
                                     margin: 0,
                                     color: 'var(--gray-800)'
-                                }}>res-gen</h1>
+                                }}>Openleaf</h1>
                             </div>
                         </div>
                     </Link>

@@ -1,6 +1,6 @@
 <div align="center">
 
-# res-gen
+<img src="./logo-readme.png" alt="Logo" width="700" />
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)

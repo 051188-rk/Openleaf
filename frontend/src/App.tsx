@@ -11,52 +11,51 @@ import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import './index.css';
 
 function App() {
-  return (
-    <AuthProvider>
-      <BrowserRouter>
-        <div style={{ minHeight: '100vh', background: 'var(--gray-50)' }}>
-          <Header />
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <TemplateSelector />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/input"
-              element={
-                <ProtectedRoute>
-                  <InputForm />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/result"
-              element={
-                <ProtectedRoute>
-                  <ResultView />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/editor"
-              element={
-                <ProtectedRoute>
-                  <EditorPage />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </AuthProvider>
-  );
+    return (
+        <AuthProvider>
+            <BrowserRouter>
+                <div style={{ minHeight: '100vh', background: 'var(--gray-50)' }}>
+                    <Header />
+                    <Routes>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/signup" element={<Signup />} />
+                        <Route
+                            path="/"
+                            element={
+                                <ProtectedRoute>
+                                    <TemplateSelector />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/input"
+                            element={
+                                <ProtectedRoute>
+                                    <InputForm />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/result"
+                            element={
+                                <ProtectedRoute>
+                                    <ResultView />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/editor"
+                            element={
+                                <ProtectedRoute>
+                                    <EditorPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                    </Routes>
+                </div>
+            </BrowserRouter>
+        </AuthProvider>
+    );
 }
 
 export default App;
-
