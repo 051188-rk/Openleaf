@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { FiMail, FiLock, FiUser } from 'react-icons/fi';
+import logoMain from '../assets/logo_main.png';
 
 export function Signup() {
     const navigate = useNavigate();
@@ -34,6 +35,17 @@ export function Signup() {
         <div className="auth-page">
             <div className="auth-container">
                 <div className="auth-card">
+                    <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+                        <img
+                            src={logoMain}
+                            alt="Openleaf Logo"
+                            style={{
+                                height: '40px',
+                                objectFit: 'contain',
+                                marginBottom: '0.75rem'
+                            }}
+                        />
+                    </div>
                     <div className="auth-header">
                         <h1>Create Account</h1>
                         <p>Start generating professional resumes with AI</p>

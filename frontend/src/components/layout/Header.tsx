@@ -1,6 +1,7 @@
-import { FiFileText, FiLogOut, FiUser } from 'react-icons/fi';
+import { FiLogOut, FiUser } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import logoMain from '../../assets/logo_main.png';
 
 export function Header() {
     const { user, logout, isAuthenticated } = useAuth();
@@ -21,26 +22,14 @@ export function Header() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
                         <div className="flex items-center gap-3">
-                            <div style={{
-                                width: '36px',
-                                height: '36px',
-                                background: 'var(--primary-green)',
-                                borderRadius: '4px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                color: 'var(--white)'
-                            }}>
-                                <FiFileText size={20} />
-                            </div>
-                            <div>
-                                <h1 style={{
-                                    fontSize: '1.25rem',
-                                    fontWeight: 600,
-                                    margin: 0,
-                                    color: 'var(--gray-800)'
-                                }}>Openleaf</h1>
-                            </div>
+                            <img
+                                src={logoMain}
+                                alt="Openleaf Logo"
+                                style={{
+                                    height: '36px',
+                                    objectFit: 'contain'
+                                }}
+                            />
                         </div>
                     </Link>
 
@@ -82,4 +71,3 @@ export function Header() {
         </header>
     );
 }
-
