@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Header } from './components/layout/Header';
+import { LandingPage } from './pages/LandingPage';
 import { TemplateSelector } from './pages/TemplateSelector';
 import { InputForm } from './pages/InputForm';
 import { ResultView } from './pages/ResultView';
@@ -12,12 +13,13 @@ import './index.css';
 
 function AppContent() {
     const location = useLocation();
-    const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
+    const isAuthPage = location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/home';
 
     return (
         <div style={{ minHeight: '100vh', background: 'var(--gray-50)' }}>
             {!isAuthPage && <Header />}
             <Routes>
+                <Route path="/home" element={<LandingPage />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route
