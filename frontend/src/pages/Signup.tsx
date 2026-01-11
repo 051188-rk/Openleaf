@@ -23,7 +23,7 @@ export function Signup() {
 
         try {
             await signup(formData.email, formData.password, formData.name);
-            navigate('/');
+            navigate('/templates');
         } catch (err: any) {
             setError(err.message || 'Signup failed. Please try again.');
         } finally {

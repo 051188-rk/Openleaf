@@ -16,7 +16,7 @@ export function Login() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const from = (location.state as any)?.from?.pathname || '/';
+    const from = (location.state as any)?.from?.pathname || '/templates';
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

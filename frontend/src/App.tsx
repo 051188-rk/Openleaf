@@ -13,17 +13,17 @@ import './index.css';
 
 function AppContent() {
     const location = useLocation();
-    const isAuthPage = location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/home';
+    const isAuthPage = location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/';
 
     return (
         <div style={{ minHeight: '100vh', background: 'var(--gray-50)' }}>
             {!isAuthPage && <Header />}
             <Routes>
-                <Route path="/home" element={<LandingPage />} />
+                <Route path="/" element={<LandingPage />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route
-                    path="/"
+                    path="/templates"
                     element={
                         <ProtectedRoute>
                             <TemplateSelector />
