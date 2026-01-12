@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { FiZap, FiCloud, FiUsers, FiFileText, FiCpu, FiTerminal, FiDownload, FiCheck, FiGithub, FiTwitter, FiLinkedin, FiMail } from 'react-icons/fi';
 import logoMain from '../assets/logo_main.png';
+import heroImage from '../assets/hero.png';
 import '../styles/landing.css';
 
 export function LandingPage() {
@@ -28,33 +29,37 @@ export function LandingPage() {
             {/* Hero Section */}
             <section className="hero-section">
                 <div className="container">
-                    <div className="hero-content">
-                        <h1 className="hero-title">
-                            LaTeX, Reimagined<br />with Intelligence
-                        </h1>
-                        <p className="hero-subtitle">
-                            Create stunning resumes and documents with AI-powered LaTeX editing.
-                            Real-time preview, intelligent suggestions, and beautiful templates.
-                        </p>
-                        <div className="hero-cta">
-                            <Link to="/signup" className="btn-primary-large">
-                                <FiZap size={20} />
-                                Start Creating Free
-                            </Link>
-                            <Link to="/login" className="btn-secondary-large">
-                                Sign In
-                            </Link>
+                    <div className="hero-layout">
+                        <div className="hero-content">
+                            <h1 className="hero-title">
+                                LaTeX, Reimagined<br />with Intelligence
+                            </h1>
+                            <p className="hero-subtitle">
+                                Create stunning resumes and documents with AI-powered LaTeX editing.
+                                Real-time preview, intelligent suggestions, and beautiful templates.
+                            </p>
+                            <div className="hero-cta">
+                                <Link to="/signup" className="btn-primary-large">
+                                    <FiZap size={20} />
+                                    Start Creating Free
+                                </Link>
+                                <Link to="/login" className="btn-secondary-large">
+                                    Sign In
+                                </Link>
+                            </div>
+
+                            {/* AI Bubbles Animation */}
+                            <div className="ai-bubbles">
+                                <div className="bubble bubble-1"></div>
+                                <div className="bubble bubble-2"></div>
+                                <div className="bubble bubble-3"></div>
+                            </div>
                         </div>
 
-                        {/* AI Bubbles Animation */}
-                        <div className="ai-bubbles">
-                            <div className="bubble bubble-1"></div>
-                            <div className="bubble bubble-2"></div>
-                            <div className="bubble bubble-3"></div>
+                        <div className="hero-image">
+                            <img src={heroImage} alt="Openleaf Hero" />
                         </div>
                     </div>
-
-
                 </div>
             </section>
 
