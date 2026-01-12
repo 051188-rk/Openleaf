@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FiZap, FiCloud, FiUsers, FiFileText, FiCpu, FiTerminal, FiDownload, FiCheck } from 'react-icons/fi';
+import { FiZap, FiCloud, FiUsers, FiFileText, FiCpu, FiTerminal, FiDownload, FiCheck, FiGithub, FiTwitter, FiLinkedin, FiMail } from 'react-icons/fi';
 import logoMain from '../assets/logo_main.png';
 import '../styles/landing.css';
 
@@ -54,19 +54,7 @@ export function LandingPage() {
                         </div>
                     </div>
 
-                    <div className="hero-visual">
-                        <div className="editor-mockup">
-                            <div className="mockup-code">
-                                <div className="code-line">\\documentclass&#123;resume&#125;</div>
-                                <div className="code-line">\\name&#123;Your Name&#125;</div>
-                                <div className="code-line pulse">AI generating...</div>
-                            </div>
-                            <div className="mockup-preview">
-                                <div className="preview-header">Resume Preview</div>
-                                <div className="preview-content"></div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </section>
 
@@ -227,7 +215,65 @@ export function LandingPage() {
             {/* Footer */}
             <footer className="landing-footer">
                 <div className="container">
-                    <p>© 2026 Openleaf. Powered by AI.</p>
+                    <div className="footer-content">
+                        <div className="footer-column footer-about">
+                            <img src={logoMain} alt="Openleaf" className="footer-logo" />
+                            <p className="footer-description">
+                                AI-powered LaTeX editing for stunning resumes and documents.
+                                Create, collaborate, and export with ease.
+                            </p>
+                            <div className="footer-social">
+                                <a href="https://github.com" aria-label="GitHub" className="social-link">
+                                    <FiGithub size={20} />
+                                </a>
+                                <a href="https://twitter.com" aria-label="Twitter" className="social-link">
+                                    <FiTwitter size={20} />
+                                </a>
+                                <a href="https://linkedin.com" aria-label="LinkedIn" className="social-link">
+                                    <FiLinkedin size={20} />
+                                </a>
+                                <a href="mailto:contact@openleaf.com" aria-label="Email" className="social-link">
+                                    <FiMail size={20} />
+                                </a>
+                            </div>
+                        </div>
+
+                        <div className="footer-column">
+                            <h4 className="footer-heading">Product</h4>
+                            <ul className="footer-links">
+                                <li><a href="#features">Features</a></li>
+                                <li><a href="#pricing">Pricing</a></li>
+                                <li><Link to="/signup">Sign Up</Link></li>
+                                <li><Link to="/login">Sign In</Link></li>
+                            </ul>
+                        </div>
+
+                        <div className="footer-column">
+                            <h4 className="footer-heading">Resources</h4>
+                            <ul className="footer-links">
+                                <li><a href="#">Documentation</a></li>
+                                <li><a href="#">Templates</a></li>
+                                <li><a href="#">Tutorials</a></li>
+                                <li><a href="#">Blog</a></li>
+                            </ul>
+                        </div>
+
+                        <div className="footer-column">
+                            <h4 className="footer-heading">Company</h4>
+                            <ul className="footer-links">
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Careers</a></li>
+                                <li><a href="#">Contact</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div className="footer-bottom">
+                        <p className="footer-copyright">
+                            © 2026 Openleaf. All rights reserved. Powered by AI.
+                        </p>
+                    </div>
                 </div>
             </footer>
         </div>
