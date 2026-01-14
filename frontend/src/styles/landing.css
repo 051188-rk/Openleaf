@@ -34,13 +34,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.875rem 1.5rem;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 16px;
-    border: 1px solid rgba(19, 138, 7, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 .navbar-logo img {
@@ -54,31 +54,22 @@
 }
 
 .navbar-links a {
-    color: var(--gray-700);
+    color: var(--gray-600);
     text-decoration: none;
     font-size: 0.9375rem;
     font-weight: 500;
     transition: all 0.2s ease;
-    position: relative;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
 }
 
 .navbar-links a:hover {
-    color: var(--primary-green);
+    color: var(--gray-900);
+    background: rgba(0, 0, 0, 0.05);
 }
 
 .navbar-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--primary-green);
-    transition: width 0.3s ease;
-}
-
-.navbar-links a:hover::after {
-    width: 100%;
+    display: none;
 }
 
 .btn-glow {
@@ -502,8 +493,20 @@
     left: 15%;
     right: 15%;
     height: 2px;
-    background: linear-gradient(90deg, var(--primary-green), transparent);
-    box-shadow: 0 0 10px rgba(19, 138, 7, 0.3);
+    background: linear-gradient(90deg, transparent, var(--primary-green), transparent);
+    background-size: 200% 100%;
+    animation: pulseGradient 3s infinite linear;
+    opacity: 0.5;
+}
+
+@keyframes pulseGradient {
+    0% {
+        background-position: 100% 0;
+    }
+
+    100% {
+        background-position: -100% 0;
+    }
 }
 
 .timeline-step {
@@ -517,7 +520,6 @@
     width: 80px;
     height: 80px;
     background: var(--white);
-    border: 3px solid var(--primary-green);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -525,8 +527,10 @@
     margin: 0 auto 1.5rem;
     color: var(--primary-green);
     font-size: 2rem;
-    box-shadow: 0 8px 24px rgba(19, 138, 7, 0.2);
-    transition: all 0.3s ease;
+    box-shadow: 0 8px 24px rgba(19, 138, 7, 0.15);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    z-index: 2;
 }
 
 .timeline-step:hover .step-icon {
