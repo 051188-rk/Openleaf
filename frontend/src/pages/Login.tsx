@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { FiMail, FiLock } from 'react-icons/fi';
+import { FiMail, FiLock, FiArrowLeft, FiAlertCircle } from 'react-icons/fi';
 import logoMain from '../assets/logo_main.png';
+import heroImage from '../assets/hero.png';
+import '../styles/auth.css';
 
 export function Login() {
     const navigate = useNavigate();
@@ -35,78 +37,106 @@ export function Login() {
 
     return (
         <div className="auth-page">
-            <div className="auth-container">
-                <div className="auth-card">
-                    <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-                        <img
-                            src={logoMain}
-                            alt="Openleaf Logo"
-                            style={{
-                                height: '40px',
-                                objectFit: 'contain',
-                                marginBottom: '0.75rem'
-                            }}
-                        />
+            <div className="auth-split-layout">
+                {/* Left Panel: Form */}
+                <div className="auth-panel-form">
+                    <Link to="/" className="auth-back-link">
+                        <FiArrowLeft /> Back to Home
+                    </Link>
+
+                    <div className="auth-form-container" style={{ width: '100%', maxWidth: '440px', margin: '0 auto' }}>
+                        <div className="auth-logo">
+                            <img src={logoMain} alt="Openleaf" style={{ height: '32px' }} />
+                        </div>
+
+                        <div className="auth-header">
+                            <h1>Welcome Back</h1>
+                            <p>Log in to continue creating your professional resume</p>
+                        </div>
+
+                        {error && (
+                            <div className="auth-error">
+                                <FiAlertCircle size={18} />
+                                {error}
+                            </div>
+                        )}
+
+                        <form onSubmit={handleSubmit} className="auth-form">
+                            <div className="form-group">
+                                <label htmlFor="email">Email</label>
+                                <div className="input-wrapper">
+                                    <input
+                                        id="email"
+                                        type="email"
+                                        className="input"
+                                        placeholder="you@example.com"
+                                        value={formData.email}
+                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                        required
+                                        autoFocus
+                                    />
+                                    <FiMail className="input-icon" size={18} />
+                                </div>
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="password">Password</label>
+                                <div className="input-wrapper">
+                                    <input
+                                        id="password"
+                                        type="password"
+                                        className="input"
+                                        placeholder="••••••••"
+                                        value={formData.password}
+                                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                        required
+                                    />
+                                    <FiLock className="input-icon" size={18} />
+                                </div>
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="btn-auth"
+                                disabled={loading}
+                            >
+                                {loading ? 'Logging in...' : 'Log In'}
+                            </button>
+                        </form>
+
+                        <div className="auth-footer">
+                            Don't have an account?
+                            <Link to="/signup" className="auth-link">
+                                Sign up
+                            </Link>
+                        </div>
                     </div>
-                    <div className="auth-header">
-                        <h1>Welcome Back</h1>
-                        <p>Log in to continue creating amazing resumes</p>
+                </div>
+
+                {/* Right Panel: Visual */}
+                <div className="auth-panel-visual">
+                    <div className="visual-background">
+                        <div className="abstract-shape shape-1"></div>
+                        <div className="abstract-shape shape-2"></div>
                     </div>
 
-                    {error && (
-                        <div className="auth-error">
-                            {error}
+                    <div className="visual-content">
+                        <div className="hero-showcase">
+                            <img src={heroImage} alt="Dashboard Preview" className="hero-image-styled" />
+
+                            <div className="testimonial-card">
+                                <p className="testimonial-text">
+                                    "Openleaf completely transformed how I apply for jobs. The AI suggestions are uncannily accurate and saved me hours of formatting!"
+                                </p>
+                                <div className="testimonial-user">
+                                    <div className="user-avatar">AM</div>
+                                    <div className="user-info">
+                                        <h4>Alex Morgan</h4>
+                                        <span>Software Engineer</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    )}
-
-                    <form onSubmit={handleSubmit} className="auth-form">
-                        <div className="form-group">
-                            <label htmlFor="email">
-                                <FiMail size={16} />
-                                Email
-                            </label>
-                            <input
-                                id="email"
-                                type="email"
-                                className="input"
-                                placeholder="you@example.com"
-                                value={formData.email}
-                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                required
-                                autoFocus
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="password">
-                                <FiLock size={16} />
-                                Password
-                            </label>
-                            <input
-                                id="password"
-                                type="password"
-                                className="input"
-                                placeholder="••••••••"
-                                value={formData.password}
-                                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                required
-                            />
-                        </div>
-
-                        <button
-                            type="submit"
-                            className="btn"
-                            disabled={loading}
-                        >
-                            {loading ? 'Logging in...' : 'Log In'}
-                        </button>
-                    </form>
-
-                    <div className="auth-footer">
-                        Don't have an account?{' '}
-                        <Link to="/signup" className="auth-link">
-                            Sign up
-                        </Link>
                     </div>
                 </div>
             </div>
