@@ -66,11 +66,16 @@
 
 .auth-logo {
     margin-bottom: 1.5rem;
-    /* Reduced */
+    display: flex;
+    justify-content: center;
 }
+
+
+
 
 .auth-header {
     margin-bottom: 2rem;
+    text-align: center;
     /* Reduced */
 }
 
