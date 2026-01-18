@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { FiMail, FiLock, FiArrowLeft, FiAlertCircle } from 'react-icons/fi';
 import logoMain from '../assets/logo_main.png';
-import heroImage from '../assets/hero.png';
+import loginImage from '../assets/login.png';
 import '../styles/auth.css';
 
 export function Login() {
@@ -122,7 +122,7 @@ export function Login() {
 
                     <div className="visual-content">
                         <div className="hero-showcase">
-                            <img src={heroImage} alt="Dashboard Preview" className="hero-image-styled" />
+                            <img src={loginImage} alt="Login Preview" className="hero-image-styled" />
 
                             <div className="testimonial-card">
                                 <p className="testimonial-text">

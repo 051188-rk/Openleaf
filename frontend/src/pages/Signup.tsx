@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { FiMail, FiLock, FiUser, FiArrowLeft, FiAlertCircle } from 'react-icons/fi';
 import logoMain from '../assets/logo_main.png';
-import heroImage from '../assets/hero.png';
+import signupImage from '../assets/signup.png';
 import '../styles/auth.css';
 
 export function Signup() {
@@ -140,7 +140,7 @@ export function Signup() {
 
                     <div className="visual-content">
                         <div className="hero-showcase">
-                            <img src={heroImage} alt="Dashboard Preview" className="hero-image-styled" />
+                            <img src={signupImage} alt="Signup Preview" className="hero-image-styled" />
 
                             <div className="testimonial-card">
                                 <p className="testimonial-text">
