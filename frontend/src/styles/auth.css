@@ -213,111 +213,72 @@
 }
 
 /* Right Panel: Visual */
+/* Right Panel: Visual */
 .auth-panel-visual {
     flex: 1;
-    background: var(--gray-900);
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
     /* Curved Corner Effect */
     margin: 1rem 1rem 1rem 0;
     /* Add margin to float it slightly */
     border-radius: 32px;
     /* Smooth curves */
+    overflow: hidden;
+    /* Ensure image respects border radius */
 }
 
-.visual-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-}
-
-.abstract-shape {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.6;
-    /* Removed animation for steady look */
-}
-
-.shape-1 {
-    top: -10%;
-    right: -10%;
-    width: 600px;
-    height: 600px;
-    background: var(--primary-green);
-    animation-delay: 0s;
-}
-
-.shape-2 {
-    bottom: -10%;
-    left: -10%;
-    width: 500px;
-    height: 500px;
-    background: #0f172a;
-    animation-delay: -4s;
-}
-
+/* Removed visual-background and abstract shapes as we use a full image */
 
 .visual-content {
-    position: relative;
-    z-index: 2;
     width: 100%;
-    max-width: 450px;
-    /* Reduced max-width */
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     height: 100%;
+    padding: 0;
+    /* Remove padding */
 }
 
 .hero-showcase {
-    position: relative;
-    margin-bottom: 0;
     width: 100%;
-    display: flex;
-    justify-content: center;
-    /* Removed animation for steady look */
+    height: 100%;
+    margin: 0;
+    position: relative;
 }
 
 .hero-image-styled {
     width: 100%;
-    max-height: 60vh;
-    /* Limit height relative to screen */
-    object-fit: contain;
-    border-radius: 12px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);
-    transition: transform 0.3s ease;
+    height: 100%;
+    object-fit: cover;
+    /* Fill the area */
+    border-radius: 0;
+    /* Remove inner radius since container clips it */
+    box-shadow: none;
+    border: none;
+    transform: none;
+    /* Remove 3D effect */
+    transition: transform 0.5s ease;
 }
 
 .hero-showcase:hover .hero-image-styled {
-    transform: perspective(1000px) rotateY(0) rotateX(0);
+    transform: scale(1.05);
+    /* Subtle zoom on hover */
 }
 
 /* Testimonial Card */
 .testimonial-card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
+    /* Slightly more opaque */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 16px;
-    padding: 1.25rem;
+    padding: 1.5rem;
     position: absolute;
-    bottom: -20px;
-    /* Adjusted position */
-    right: -20px;
-    max-width: 300px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    bottom: 40px;
+    /* Moved up slightly */
+    right: 40px;
+    /* Moved in slightly */
+    max-width: 320px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     animation: slideUp 0.8s ease-out 0.4s both;
+    z-index: 10;
 }
 
 .testimonial-text {

@@ -133,11 +133,6 @@ export function Signup() {
 
                 {/* Right Panel: Visual */}
                 <div className="auth-panel-visual">
-                    <div className="visual-background">
-                        <div className="abstract-shape shape-1"></div>
-                        <div className="abstract-shape shape-2"></div>
-                    </div>
-
                     <div className="visual-content">
                         <div className="hero-showcase">
                             <img src={signupImage} alt="Signup Preview" className="hero-image-styled" />
