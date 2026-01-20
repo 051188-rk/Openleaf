@@ -256,10 +256,8 @@
     transition: transform 0.5s ease;
 }
 
-.hero-showcase:hover .hero-image-styled {
-    transform: scale(1.05);
-    /* Subtle zoom on hover */
-}
+
+
 
 /* Testimonial Card */
 .testimonial-card {
