@@ -154,68 +154,6 @@ export function LandingPage() {
                 </div>
             </section>
 
-            {/* Pricing */}
-            <section id="pricing" className="pricing-section">
-                <div className="container">
-                    <h2 className="section-title">Simple Pricing</h2>
-                    <div className="pricing-cards">
-                        <div className="pricing-card">
-                            <div className="pricing-header">
-                                <h3>Free</h3>
-                                <div className="price">
-                                    <span className="price-amount">$0</span>
-                                    <span className="price-period">/month</span>
-                                </div>
-                            </div>
-                            <ul className="pricing-features">
-                                <li><FiCheck /> 5 AI Drafts/month</li>
-                                <li><FiCheck /> Standard Templates</li>
-                                <li><FiCheck /> PDF Export</li>
-                                <li><FiCheck /> Cloud Storage (1GB)</li>
-                            </ul>
-                            <Link to="/signup" className="btn-pricing">Get Started</Link>
-                        </div>
-
-                        <div className="pricing-card pricing-card-featured">
-                            <div className="popular-badge">Most Popular</div>
-                            <div className="pricing-header">
-                                <h3>Pro</h3>
-                                <div className="price">
-                                    <span className="price-amount">$12</span>
-                                    <span className="price-period">/month</span>
-                                </div>
-                            </div>
-                            <ul className="pricing-features">
-                                <li><FiCheck /> Unlimited AI Drafts</li>
-                                <li><FiCheck /> Premium Templates</li>
-                                <li><FiCheck /> Advanced Export</li>
-                                <li><FiCheck /> Cloud Storage (100GB)</li>
-                                <li><FiCheck /> Real-time Collaboration</li>
-                                <li><FiCheck /> Priority Support</li>
-                            </ul>
-                            <Link to="/signup" className="btn-pricing-featured">Upgrade to Pro</Link>
-                        </div>
-
-                        <div className="pricing-card">
-                            <div className="pricing-header">
-                                <h3>Team</h3>
-                                <div className="price">
-                                    <span className="price-amount">$39</span>
-                                    <span className="price-period">/month</span>
-                                </div>
-                            </div>
-                            <ul className="pricing-features">
-                                <li><FiCheck /> Everything in Pro</li>
-                                <li><FiCheck /> Up to 10 members</li>
-                                <li><FiCheck /> Team Management</li>
-                                <li><FiCheck /> Advanced Analytics</li>
-                                <li><FiCheck /> Custom Templates</li>
-                            </ul>
-                            <Link to="/signup" className="btn-pricing">Contact Sales</Link>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             {/* Footer */}
             <footer className="landing-footer">
