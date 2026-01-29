@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
 import {
-    FiZap, FiCloud, FiUsers, FiFileText, FiCpu, FiTerminal,
+    FiZap, FiCloud, FiUsers, FiFileText, FiCpu,
     FiDownload, FiGithub, FiTwitter, FiLinkedin, FiMail,
     FiMonitor
 } from 'react-icons/fi';
@@ -204,6 +204,9 @@ const Process = () => {
 };
 
 const Testimonials = () => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, margin: "-100px" });
+
     const testimonials = [
         {
             name: "Sarah Chen",
@@ -225,19 +228,53 @@ const Testimonials = () => {
         }
     ];
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.2
+            }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 40, scale: 0.95 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: { duration: 0.6 }
+        }
+    };
+
     return (
-        <section id="testimonials" className="testimonials-section">
+        <section id="testimonials" className="testimonials-section" ref={ref}>
             <div className="container">
-                <h2 className="section-title text-gradient">Loved by Creators</h2>
-                <div className="testimonials-grid">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.6 }}
+                    className="text-center mb-6"
+                >
+                    <h2 className="section-title text-gradient">Loved by Creators</h2>
+                    <p className="section-description">
+                        Join thousands of researchers, students, and professionals who trust Openleaf.
+                    </p>
+                </motion.div>
+
+                <motion.div
+                    className="testimonials-grid"
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate={isInView ? "visible" : "hidden"}
+                >
                     {testimonials.map((t, idx) => (
                         <motion.div
                             key={idx}
                             className="glass-card-premium testimonial-card"
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: idx * 0.1 }}
+                            variants={itemVariants}
+                            whileHover={{ y: -5, transition: { duration: 0.2 } }}
                         >
                             <div className="testimonial-quote">"{t.quote}"</div>
                             <div className="testimonial-author">
@@ -249,7 +286,7 @@ const Testimonials = () => {
                             </div>
                         </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </section>
     );
